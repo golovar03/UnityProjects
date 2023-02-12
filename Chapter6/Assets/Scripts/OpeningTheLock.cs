@@ -7,44 +7,41 @@ using Random = System.Random;
 
 public class OpeningTheLock : MonoBehaviour
 {
-    [SerializeField] private Text firstPasswordNumber;
-    [SerializeField] private Text secondPasswordNumber;
-    [SerializeField] private Text thirdPasswordNumber;
-    [SerializeField] private Text timerText;
-    [SerializeField] private GameObject lossGamePanel;
-    [SerializeField] private GameObject winGamePanel;
-    [SerializeField] private GameObject gamePanel;
-    [SerializeField] private GameObject surrenderButton;
-    private float timerValue;
-    private bool timerStart = false;
-    private Random randFirstNumber = new Random();
-    private Random randSecondNumber = new Random();
-    private Random randThirdNumber = new Random();
+    [SerializeField] private Text _firstPasswordNumber;
+    [SerializeField] private Text _secondPasswordNumber;
+    [SerializeField] private Text _thirdPasswordNumber;
+    [SerializeField] private Text _timerText;
 
+    [SerializeField] private GameObject _lossGamePanel;
+    [SerializeField] private GameObject _winGamePanel;
+    [SerializeField] private GameObject _gamePanel;
+    [SerializeField] private GameObject _surrenderButton;
+
+    private float _timerValue;
+    private bool _timerStart = false;
+
+    private Random _randFirstNumber = new Random();
+    private Random _randSecondNumber = new Random();
+    private Random _randThirdNumber = new Random();
 
     public void StartGame()
     {
-        timerValue = 90f;
-        firstPasswordNumber.text = (randFirstNumber.Next(0, 9)).ToString();
-        secondPasswordNumber.text = (randSecondNumber.Next(0, 9)).ToString();
-        thirdPasswordNumber.text = (randThirdNumber.Next(0, 9)).ToString();
-        timerText.text = timerValue.ToString();
-        timerStart = !timerStart;
-    }
-
-    private void Start()
-    {
-
+        _timerValue = 90f;
+        _firstPasswordNumber.text = (_randFirstNumber.Next(0, 9)).ToString();
+        _secondPasswordNumber.text = (_randSecondNumber.Next(0, 9)).ToString();
+        _thirdPasswordNumber.text = (_randThirdNumber.Next(0, 9)).ToString();
+        _timerText.text = _timerValue.ToString();
+        _timerStart = !_timerStart;
     }
 
     private void Update()
     {
-        if (timerStart == true)
+        if (_timerStart == true)
         {
-            if (Convert.ToSingle(timerText.text) > 0)
+            if (Convert.ToSingle(_timerText.text) > 0)
             {
-                timerValue = timerValue - Time.deltaTime;
-                timerText.text = timerValue.ToString("F1");
+                _timerValue = _timerValue - Time.deltaTime;
+                _timerText.text = _timerValue.ToString("F1");
             }
             else
             {
@@ -55,14 +52,13 @@ public class OpeningTheLock : MonoBehaviour
 
     public void EndGame()
     {
-        
-        if ((firstPasswordNumber.text + secondPasswordNumber.text + thirdPasswordNumber.text) == "385")
+        if ((_firstPasswordNumber.text + _secondPasswordNumber.text + _thirdPasswordNumber.text) == "385")
         {
             WinGame();
         }
-        else if (timerValue - 5 > 0)
+        else if (_timerValue - 5 > 0)
         {
-            timerValue -= 5;
+            _timerValue -= 5;
         }
         else
         {
@@ -70,110 +66,108 @@ public class OpeningTheLock : MonoBehaviour
         }
     }
 
-
-    public void FirstButtonOnClick()
+    public void FirstToolButtonOnClick()
     {
-        FirstButtonClick();
+        UseFirstTool();
     }
 
-    private void FirstButtonClick()
+    private void UseFirstTool()
     {
-        if (Convert.ToInt32(firstPasswordNumber.text) < 9 && Convert.ToInt32(firstPasswordNumber.text) >= 0)
+        if (Convert.ToInt32(_firstPasswordNumber.text) < 9 && Convert.ToInt32(_firstPasswordNumber.text) >= 0)
         {
-            firstPasswordNumber.text = (Convert.ToInt32(firstPasswordNumber.text) + 1).ToString();
+            _firstPasswordNumber.text = (Convert.ToInt32(_firstPasswordNumber.text) + 1).ToString();
         }
         else
         {
-            firstPasswordNumber.text = "9";
+            _firstPasswordNumber.text = "9";
         }
-        if (Convert.ToInt32(secondPasswordNumber.text) <= 9 && Convert.ToInt32(secondPasswordNumber.text) > 0)
+        if (Convert.ToInt32(_secondPasswordNumber.text) <= 9 && Convert.ToInt32(_secondPasswordNumber.text) > 0)
         {
-            secondPasswordNumber.text = (Convert.ToInt32(secondPasswordNumber.text) - 1).ToString();
-        }
-        else
-        {
-            secondPasswordNumber.text = "0";
-        }
-
-    }
-
-    public void SecondButtonOnClick()
-    {
-        SecondButtonClick();
-    }
-
-    private void SecondButtonClick()
-    {
-        if (Convert.ToInt32(firstPasswordNumber.text) <= 9 && Convert.ToInt32(firstPasswordNumber.text) > 1)
-        {
-            firstPasswordNumber.text = (Convert.ToInt32(firstPasswordNumber.text) - 1).ToString();
+            _secondPasswordNumber.text = (Convert.ToInt32(_secondPasswordNumber.text) - 1).ToString();
         }
         else
         {
-            firstPasswordNumber.text = "0";
-        }
-        if (Convert.ToInt32(secondPasswordNumber.text) < 8 && Convert.ToInt32(secondPasswordNumber.text) >= 0)
-        {
-            secondPasswordNumber.text = (Convert.ToInt32(secondPasswordNumber.text) + 2).ToString();
-        }
-        else
-        {
-            secondPasswordNumber.text = "9";
-        }
-        if (Convert.ToInt32(thirdPasswordNumber.text) > 0 && Convert.ToInt32(thirdPasswordNumber.text) <= 9)
-        {
-            thirdPasswordNumber.text = (Convert.ToInt32(thirdPasswordNumber.text) - 1).ToString();
-        }
-        else
-        {
-            thirdPasswordNumber.text = "0";
+            _secondPasswordNumber.text = "0";
         }
     }
 
-    public void ThirdButtonOnClick()
+    public void SecondToolButtonOnClick()
     {
-        ThirdButtonClick();
+        UseSecondTool();
     }
 
-    private void ThirdButtonClick()
+    private void UseSecondTool()
     {
-        if (Convert.ToInt32(firstPasswordNumber.text) <= 9 && Convert.ToInt32(firstPasswordNumber.text) > 1)
+        if (Convert.ToInt32(_firstPasswordNumber.text) <= 9 && Convert.ToInt32(_firstPasswordNumber.text) > 1)
         {
-            firstPasswordNumber.text = (Convert.ToInt32(firstPasswordNumber.text) - 1).ToString();
+            _firstPasswordNumber.text = (Convert.ToInt32(_firstPasswordNumber.text) - 1).ToString();
         }
         else
         {
-            firstPasswordNumber.text = "0";
+            _firstPasswordNumber.text = "0";
         }
-        if (Convert.ToInt32(secondPasswordNumber.text) < 9 && Convert.ToInt32(secondPasswordNumber.text) >= 0)
+        if (Convert.ToInt32(_secondPasswordNumber.text) < 8 && Convert.ToInt32(_secondPasswordNumber.text) >= 0)
         {
-            secondPasswordNumber.text = (Convert.ToInt32(secondPasswordNumber.text) + 1).ToString();
-        }
-        else
-        {
-            secondPasswordNumber.text = "9";
-        }
-        if (Convert.ToInt32(thirdPasswordNumber.text) >= 0 && Convert.ToInt32(thirdPasswordNumber.text) < 9)
-        {
-            thirdPasswordNumber.text = (Convert.ToInt32(thirdPasswordNumber.text) + 1).ToString();
+            _secondPasswordNumber.text = (Convert.ToInt32(_secondPasswordNumber.text) + 2).ToString();
         }
         else
         {
-            thirdPasswordNumber.text = "9";
+            _secondPasswordNumber.text = "9";
+        }
+        if (Convert.ToInt32(_thirdPasswordNumber.text) > 0 && Convert.ToInt32(_thirdPasswordNumber.text) <= 9)
+        {
+            _thirdPasswordNumber.text = (Convert.ToInt32(_thirdPasswordNumber.text) - 1).ToString();
+        }
+        else
+        {
+            _thirdPasswordNumber.text = "0";
+        }
+    }
+
+    public void ThirdToolButtonOnClick()
+    {
+        UseThirdTool();
+    }
+
+    private void UseThirdTool()
+    {
+        if (Convert.ToInt32(_firstPasswordNumber.text) <= 9 && Convert.ToInt32(_firstPasswordNumber.text) > 1)
+        {
+            _firstPasswordNumber.text = (Convert.ToInt32(_firstPasswordNumber.text) - 1).ToString();
+        }
+        else
+        {
+            _firstPasswordNumber.text = "0";
+        }
+        if (Convert.ToInt32(_secondPasswordNumber.text) < 9 && Convert.ToInt32(_secondPasswordNumber.text) >= 0)
+        {
+            _secondPasswordNumber.text = (Convert.ToInt32(_secondPasswordNumber.text) + 1).ToString();
+        }
+        else
+        {
+            _secondPasswordNumber.text = "9";
+        }
+        if (Convert.ToInt32(_thirdPasswordNumber.text) >= 0 && Convert.ToInt32(_thirdPasswordNumber.text) < 9)
+        {
+            _thirdPasswordNumber.text = (Convert.ToInt32(_thirdPasswordNumber.text) + 1).ToString();
+        }
+        else
+        {
+            _thirdPasswordNumber.text = "9";
         }
     }
 
     private void LoseGame()
     {
-        timerStart = false;
-        gamePanel.SetActive(false);
-        lossGamePanel.SetActive(true);
+        _timerStart = false;
+        _gamePanel.SetActive(false);
+        _lossGamePanel.SetActive(true);
     }
     private void WinGame()
     {
-        timerStart = false;
-        gamePanel.SetActive(false);
-        winGamePanel.SetActive(true);
+        _timerStart = false;
+        _gamePanel.SetActive(false);
+        _winGamePanel.SetActive(true);
     }
 
     public void SurenderButtonOnClick()

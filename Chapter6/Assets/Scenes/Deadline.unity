@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 32238769}
   - component: {fileID: 32238768}
   m_Layer: 5
-  m_Name: EndGameButton
+  m_Name: SurrenderButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -369,7 +369,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 721319424}
+      - m_Target: {fileID: 721319427}
         m_TargetAssemblyTypeName: OpeningTheLock, Assembly-CSharp
         m_MethodName: SurenderButtonOnClick
         m_Mode: 1
@@ -1052,7 +1052,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 721319424}
+      - m_Target: {fileID: 721319427}
         m_TargetAssemblyTypeName: OpeningTheLock, Assembly-CSharp
         m_MethodName: EndGame
         m_Mode: 1
@@ -1186,9 +1186,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 721319424}
+      - m_Target: {fileID: 721319427}
         m_TargetAssemblyTypeName: OpeningTheLock, Assembly-CSharp
-        m_MethodName: ThirdButtonOnClick
+        m_MethodName: ThirdToolButtonOnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1248,7 +1248,7 @@ GameObject:
   - component: {fileID: 569760617}
   - component: {fileID: 569760616}
   m_Layer: 5
-  m_Name: EndGameText
+  m_Name: SurrenderButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1492,7 +1492,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 721319424}
+      - m_Target: {fileID: 721319427}
         m_TargetAssemblyTypeName: OpeningTheLock, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
@@ -1553,7 +1553,7 @@ GameObject:
   - component: {fileID: 721319423}
   - component: {fileID: 721319426}
   - component: {fileID: 721319425}
-  - component: {fileID: 721319424}
+  - component: {fileID: 721319427}
   m_Layer: 5
   m_Name: GamePanel
   m_TagString: Untagged
@@ -1589,26 +1589,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0, y: 0.000014305115}
   m_SizeDelta: {x: 1261.4597, y: 882.8575}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &721319424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 721319422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8db0a2fb7be7e3a40ac5c15cc2378922, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstPasswordNumber: {fileID: 1104048888}
-  secondPasswordNumber: {fileID: 266806892}
-  thirdPasswordNumber: {fileID: 1672468869}
-  timerText: {fileID: 1131524804}
-  lossGamePanel: {fileID: 1809033986}
-  winGamePanel: {fileID: 1502089424}
-  gamePanel: {fileID: 721319422}
-  surrenderButton: {fileID: 32238766}
 --- !u!114 &721319425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1647,6 +1627,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 721319422}
   m_CullTransparentMesh: 1
+--- !u!114 &721319427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721319422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8db0a2fb7be7e3a40ac5c15cc2378922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firstPasswordNumber: {fileID: 1104048888}
+  _secondPasswordNumber: {fileID: 266806892}
+  _thirdPasswordNumber: {fileID: 1672468869}
+  _timerText: {fileID: 1131524804}
+  _lossGamePanel: {fileID: 1809033986}
+  _winGamePanel: {fileID: 1502089424}
+  _gamePanel: {fileID: 721319422}
+  _surrenderButton: {fileID: 32238766}
 --- !u!1 &731624527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,7 +1660,7 @@ GameObject:
   - component: {fileID: 731624530}
   - component: {fileID: 731624529}
   m_Layer: 5
-  m_Name: EndGameButton
+  m_Name: SurrenderButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2599,7 +2599,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 721319424}
+      - m_Target: {fileID: 721319427}
         m_TargetAssemblyTypeName: OpeningTheLock, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
@@ -2902,9 +2902,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 721319424}
+      - m_Target: {fileID: 721319427}
         m_TargetAssemblyTypeName: OpeningTheLock, Assembly-CSharp
-        m_MethodName: SecondButtonOnClick
+        m_MethodName: SecondToolButtonOnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3287,7 +3287,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 721319424}
+      - m_Target: {fileID: 721319427}
         m_TargetAssemblyTypeName: OpeningTheLock, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
@@ -3361,7 +3361,7 @@ GameObject:
   - component: {fileID: 1454585403}
   - component: {fileID: 1454585402}
   m_Layer: 5
-  m_Name: EndGameText
+  m_Name: SurrenderButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4089,9 +4089,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 721319424}
+      - m_Target: {fileID: 721319427}
         m_TargetAssemblyTypeName: OpeningTheLock, Assembly-CSharp
-        m_MethodName: FirstButtonOnClick
+        m_MethodName: FirstToolButtonOnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
