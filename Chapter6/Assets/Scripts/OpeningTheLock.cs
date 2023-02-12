@@ -163,6 +163,7 @@ public class OpeningTheLock : MonoBehaviour
         _gamePanel.SetActive(false);
         _lossGamePanel.SetActive(true);
     }
+
     private void WinGame()
     {
         _timerStart = false;
