@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] private Text _ResourcesCount;
     [SerializeField] private Text _WarriorsCountText;
+    [SerializeField] private Text _TomatoFarmsCountText;
+
     [SerializeField] private int _TomatoFarmsCount;
     [SerializeField] private int _WarriorsCount;
     [SerializeField] private int _TomatoCount;
@@ -29,6 +31,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int _RaidMaxTime;
     [SerializeField] private int _RaidIncrease;
     [SerializeField] private int _NextRaid;
+
+    private float _TomatoFarmTimer = -2;
+    private float _WarriorCreateTimer = -4;
+    private int _TomatoFarmsMaxCount = 6;
 
 
 
@@ -45,13 +51,26 @@ public class GameManager : MonoBehaviour
         if (_FarmTimer.Tick)
         {
             _TomatoCount += _TomatoFarmsCount * _TomatoProducesOneFarm;
-            UpdateResourcesText();
         }
 
         if (_EatingTimer.Tick)
         {
             _TomatoCount -= _WarriorsCount * _WarriorEatsTomato;
-            UpdateResourcesText();
+        }
+        UpdateResourcesText();
+
+        if (_TomatoFarmTimer > 0)
+        {
+            _TomatoFarmTimer -= Time.deltaTime;
+            _TomatoTimer.fillAmount = _TomatoFarmTimer / _TomatoFarmCreateTime;
+        }
+        else if (_TomatoFarmTimer >= -1)
+        {
+            _TomatoTimer.fillAmount = 1;
+            _TomatoFarmTimer = -2;
+            _TomatoButton.interactable = true;
+            _TomatoTimer.gameObject.SetActive(false);
+            _TomatoFarmsCount += 1;
         }
     }
 
@@ -59,5 +78,21 @@ public class GameManager : MonoBehaviour
     {
         _ResourcesCount.text = _TomatoCount.ToString();
         _WarriorsCountText.text = _WarriorsCount.ToString();
+        _TomatoFarmsCountText.text = _TomatoFarmsCount.ToString();
+    }
+
+    public void CreateTomatoFarm()
+    {
+        _TomatoCount -= _TomatoPerBuyFarm;
+        if (_TomatoCount >= 0 && _TomatoFarmsCount < _TomatoFarmsMaxCount)
+        {
+            _TomatoFarmTimer = _TomatoFarmCreateTime;
+            _TomatoTimer.gameObject.SetActive(true);
+            _TomatoButton.interactable = false;
+        }
+        else if(_TomatoFarmsCount == _TomatoFarmsMaxCount)
+        {
+            _TomatoButton.interactable = false;
+        }
     }
 }

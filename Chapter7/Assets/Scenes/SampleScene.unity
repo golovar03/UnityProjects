@@ -208,7 +208,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 84483310}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 565496908}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CreateTomatoFarm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &84483310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -623,7 +635,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &417764931
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1110,6 +1122,7 @@ MonoBehaviour:
   _WarriorsButton: {fileID: 238137369}
   _ResourcesCount: {fileID: 1658233413}
   _WarriorsCountText: {fileID: 2075137980}
+  _TomatoFarmsCountText: {fileID: 2085361838}
   _TomatoFarmsCount: 1
   _WarriorsCount: 1
   _TomatoCount: 5
