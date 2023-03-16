@@ -5,36 +5,39 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private ImageTimer _FarmTimer;
-    [SerializeField] private ImageTimer _EatingTimer;
+    [SerializeField] private GameObject _gameOverPanel;
 
-    [SerializeField] private Image _RaidTimer;
-    [SerializeField] private Image _TomatoTimer;
-    [SerializeField] private Image _WarriorsTimer;
+    [SerializeField] private ImageTimer _farmTimer;
+    [SerializeField] private ImageTimer _eatingTimer;
 
-    [SerializeField] private Button _TomatoButton;
-    [SerializeField] private Button _WarriorsButton;
+    [SerializeField] private Image _raidTimerImg;
+    [SerializeField] private Image _tomatoTimerImg;
+    [SerializeField] private Image _securityTimerImg;
+
+    [SerializeField] private Button _tomatoCreateButton;
+    [SerializeField] private Button _securityCreateButton;
     
-    [SerializeField] private Text _ResourcesCount;
-    [SerializeField] private Text _WarriorsCountText;
-    [SerializeField] private Text _TomatoFarmsCountText;
+    [SerializeField] private Text _resourcesCount; //отображает общее количество ресурсов
+    [SerializeField] private Text _warriorsCountText;//..воинов
+    [SerializeField] private Text _tomatoFarmsCountText;//..помидрных ферм
 
-    [SerializeField] private int _TomatoFarmsCount;
-    [SerializeField] private int _WarriorsCount;
-    [SerializeField] private int _TomatoCount;
-    [SerializeField] private int _TomatoProducesOneFarm;
-    [SerializeField] private int _WarriorEatsTomato;
-    [SerializeField] private int _TomatoPerBuyFarm;
-    [SerializeField] private int _TomatoPerBuyWarrior;
-    [SerializeField] private int _TomatoFarmCreateTime;
-    [SerializeField] private int _WarriorCreateTime;
-    [SerializeField] private int _RaidMaxTime;
-    [SerializeField] private int _RaidIncrease;
-    [SerializeField] private int _NextRaid;
+    [SerializeField] private int _tomatoFarmsCount;//количество помидорных ферм
+    [SerializeField] private int _securutyCount; //количетсво воино "Охранник"
+    [SerializeField] private int _tomatoCount; //количество помидоров
+    [SerializeField] private int _tomatoProducesOneFarm; //количетсво помидоров, производимых одной фермой за цикл
+    [SerializeField] private int _securityEatsTomato; //съедает помидор Охранник за цикл
+    [SerializeField] private int _tomatoPerBuyFarm; //количетсво помидор на покупку новой фермы
+    [SerializeField] private int _tomatoPerBuySecurity; //количество помидор на найм Охранника
+    [SerializeField] private int _tomatoFarmCreateTime; //время постройки фермы (сек.)
+    [SerializeField] private int _securityCreateTime; //время найма Охраниика (сек.)
+    [SerializeField] private int _raidMaxTime; //время до нападения (сек.)
+    [SerializeField] private int _raidIncrease; //количество зомби на которое увеличивается каждое новое нападение
+    [SerializeField] private int _nextRaid; //
 
-    private float _TomatoFarmTimer = -2;
-    private float _WarriorCreateTimer = -4;
-    private int _TomatoFarmsMaxCount = 6;
+    private float _tomatoFarmTimer = -2;
+    private float _securityCreateTimer = -2;
+    private float _raidTimer;
+    private int _tomatoFarmsMaxCount = 6;
 
 
 
@@ -42,57 +45,111 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        UpdateResourcesText(); 
+        UpdateResourcesText();
+        _raidTimer = _raidMaxTime;
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_FarmTimer.Tick)
+        _raidTimer -= Time.deltaTime;
+        _raidTimerImg.fillAmount = _raidTimer / _raidMaxTime;
+
+        if(_raidTimer <= 0)
         {
-            _TomatoCount += _TomatoFarmsCount * _TomatoProducesOneFarm;
+            _raidTimer = _raidMaxTime;
+            if((_securutyCount -= _nextRaid) >= 0)
+            {
+                _securutyCount -= _nextRaid;
+                _nextRaid += _raidIncrease;
+            }
+            else
+            {
+                Time.timeScale = 0;
+                _gameOverPanel.SetActive(true);
+            }
+            
         }
 
-        if (_EatingTimer.Tick)
+        if (_farmTimer.Tick)
         {
-            _TomatoCount -= _WarriorsCount * _WarriorEatsTomato;
+            _tomatoCount += _tomatoFarmsCount * _tomatoProducesOneFarm;
+        }
+
+        if (_eatingTimer.Tick)
+        {
+            if ((_tomatoCount / _securityEatsTomato) < _securutyCount)
+            {
+                _securutyCount = _tomatoCount / _securityEatsTomato;
+                _tomatoCount -= _securutyCount * _securityEatsTomato;
+            }
+            else
+            {
+                _tomatoCount -= _securutyCount * _securityEatsTomato;
+            }
         }
         UpdateResourcesText();
 
-        if (_TomatoFarmTimer > 0)
+        if (_tomatoFarmTimer > 0)
         {
-            _TomatoFarmTimer -= Time.deltaTime;
-            _TomatoTimer.fillAmount = _TomatoFarmTimer / _TomatoFarmCreateTime;
+            _tomatoFarmTimer -= Time.deltaTime;
+            _tomatoTimerImg.fillAmount = _tomatoFarmTimer / _tomatoFarmCreateTime;
         }
-        else if (_TomatoFarmTimer >= -1)
+        else if (_tomatoFarmTimer >= -1)
         {
-            _TomatoTimer.fillAmount = 1;
-            _TomatoFarmTimer = -2;
-            _TomatoButton.interactable = true;
-            _TomatoTimer.gameObject.SetActive(false);
-            _TomatoFarmsCount += 1;
+            _tomatoTimerImg.fillAmount = 1;
+            _tomatoFarmTimer = -2;
+            _tomatoCreateButton.interactable = true;
+            _tomatoTimerImg.gameObject.SetActive(false);
+            _tomatoFarmsCount += 1;
+        }
+
+        if (_securityCreateTimer > 0)
+        {
+            _securityCreateTimer -= Time.deltaTime;
+            _securityTimerImg.fillAmount = _securityCreateTimer / _securityCreateTime;
+        }
+        else if (_securityCreateTimer >= -1)
+        {
+            _securityTimerImg.fillAmount = 1;
+            _securityCreateTimer = -2;
+            _securityTimerImg.gameObject.SetActive(false);
+            _securityCreateButton.interactable = true;
+            _securutyCount += 1;
         }
     }
 
     void UpdateResourcesText()
     {
-        _ResourcesCount.text = _TomatoCount.ToString();
-        _WarriorsCountText.text = _WarriorsCount.ToString();
-        _TomatoFarmsCountText.text = _TomatoFarmsCount.ToString();
+        _resourcesCount.text = _tomatoCount.ToString();
+        _warriorsCountText.text = _securutyCount.ToString();
+        _tomatoFarmsCountText.text = _tomatoFarmsCount.ToString();
     }
 
     public void CreateTomatoFarm()
     {
-        _TomatoCount -= _TomatoPerBuyFarm;
-        if (_TomatoCount >= 0 && _TomatoFarmsCount < _TomatoFarmsMaxCount)
+        if (_tomatoCount >= _tomatoPerBuyFarm && _tomatoFarmsCount < _tomatoFarmsMaxCount)
         {
-            _TomatoFarmTimer = _TomatoFarmCreateTime;
-            _TomatoTimer.gameObject.SetActive(true);
-            _TomatoButton.interactable = false;
+            _tomatoCount -= _tomatoPerBuyFarm;
+            _tomatoFarmTimer = _tomatoFarmCreateTime;
+            _tomatoTimerImg.gameObject.SetActive(true);
+            _tomatoCreateButton.interactable = false;
         }
-        else if(_TomatoFarmsCount == _TomatoFarmsMaxCount)
+        else if(_tomatoFarmsCount == _tomatoFarmsMaxCount)
         {
-            _TomatoButton.interactable = false;
+            _tomatoCreateButton.interactable = false;
+        }
+    }
+
+    public void CreateSecurityWarrior()
+    {
+        if(_tomatoCount >= _tomatoPerBuySecurity)
+        {
+            _tomatoCount -= _tomatoPerBuySecurity;
+            _securityCreateTimer = _securityCreateTime;
+            _securityTimerImg.gameObject.SetActive(true);
+            _securityCreateButton.interactable = false;
         }
     }
 }
