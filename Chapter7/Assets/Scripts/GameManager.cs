@@ -19,10 +19,14 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] private Text _resourcesCount; //отображает общее количество ресурсов
     [SerializeField] private Text _warriorsCountText;//..воинов
-    [SerializeField] private Text _tomatoFarmsCountText;//..помидрных ферм
+    [SerializeField] private Text _tomatoFarmsCountText;//..помидорных ферм
+    [SerializeField] private Text _objectiveResources;
+    [SerializeField] private Text _objectiveFarmsCount;
+    [SerializeField] private Text _objectiveSecurityCount;
+    [SerializeField] private Text _objectiveAttackCount;
 
     [SerializeField] private int _tomatoFarmsCount;//количество помидорных ферм
-    [SerializeField] private int _securutyCount; //количетсво воино "Охранник"
+    [SerializeField] private int _securityCount; //количетсво воино "Охранник"
     [SerializeField] private int _tomatoCount; //количество помидоров
     [SerializeField] private int _tomatoProducesOneFarm; //количетсво помидоров, производимых одной фермой за цикл
     [SerializeField] private int _securityEatsTomato; //съедает помидор Охранник за цикл
@@ -38,10 +42,11 @@ public class GameManager : MonoBehaviour
     private float _securityCreateTimer = -2;
     private float _raidTimer;
     private int _tomatoFarmsMaxCount = 6;
+    private int _totalResource = 0;
+    private int _totalSecurityCount = 0;
+    private int _totalAttack = 0;
 
-
-
-
+    private Color _doneColor = new Color(0.14f, 1f, 0.25f, 1);
 
     void Start()
     {
@@ -58,11 +63,21 @@ public class GameManager : MonoBehaviour
 
         if(_raidTimer <= 0)
         {
+            _raidMaxTime += 5;
             _raidTimer = _raidMaxTime;
-            if((_securutyCount -= _nextRaid) >= 0)
+            if((_securityCount - _nextRaid) >= 0)
             {
-                _securutyCount -= _nextRaid;
+                if(_nextRaid > 0)
+                {
+                    _totalAttack += 1;
+                    if(_totalAttack == 10)
+                    {
+                        _objectiveAttackCount.color = _doneColor;
+                    }
+                }
+                _securityCount -= _nextRaid;
                 _nextRaid += _raidIncrease;
+                
             }
             else
             {
@@ -75,18 +90,23 @@ public class GameManager : MonoBehaviour
         if (_farmTimer.Tick)
         {
             _tomatoCount += _tomatoFarmsCount * _tomatoProducesOneFarm;
+            _totalResource += _tomatoFarmsCount * _tomatoProducesOneFarm;
+            if (_totalResource >= 1000) 
+            {
+                _objectiveResources.color = _doneColor;
+            }
         }
 
         if (_eatingTimer.Tick)
         {
-            if ((_tomatoCount / _securityEatsTomato) < _securutyCount)
+            if ((_tomatoCount / _securityEatsTomato) < _securityCount)
             {
-                _securutyCount = _tomatoCount / _securityEatsTomato;
-                _tomatoCount -= _securutyCount * _securityEatsTomato;
+                _securityCount = _tomatoCount / _securityEatsTomato;
+                _tomatoCount -= _securityCount * _securityEatsTomato;
             }
             else
             {
-                _tomatoCount -= _securutyCount * _securityEatsTomato;
+                _tomatoCount -= _securityCount * _securityEatsTomato;
             }
         }
         UpdateResourcesText();
@@ -103,6 +123,10 @@ public class GameManager : MonoBehaviour
             _tomatoCreateButton.interactable = true;
             _tomatoTimerImg.gameObject.SetActive(false);
             _tomatoFarmsCount += 1;
+            if (_tomatoFarmsCount == _tomatoFarmsMaxCount)
+            {
+                _objectiveFarmsCount.color = _doneColor;
+            }
         }
 
         if (_securityCreateTimer > 0)
@@ -116,15 +140,24 @@ public class GameManager : MonoBehaviour
             _securityCreateTimer = -2;
             _securityTimerImg.gameObject.SetActive(false);
             _securityCreateButton.interactable = true;
-            _securutyCount += 1;
+            _securityCount += 1;
+            _totalSecurityCount += 1;
+            if(_totalSecurityCount == 10)
+            {
+                _objectiveSecurityCount.color = _doneColor;
+            }
         }
     }
 
     void UpdateResourcesText()
     {
         _resourcesCount.text = _tomatoCount.ToString();
-        _warriorsCountText.text = _securutyCount.ToString();
+        _objectiveResources.text = _totalResource.ToString() + "/1000";
+        _warriorsCountText.text = _securityCount.ToString();
+        _objectiveSecurityCount.text = _totalSecurityCount.ToString() + "/10";
         _tomatoFarmsCountText.text = _tomatoFarmsCount.ToString();
+        _objectiveFarmsCount.text = _tomatoFarmsCount.ToString() + "/6";
+        _objectiveAttackCount.text = _totalAttack.ToString() + "/10";    
     }
 
     public void CreateTomatoFarm()
