@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject _gameWinPanel;
-
+    [SerializeField] private GameObject _warriorsSound;
+    [SerializeField] private GameObject _farmsSound;
 
     [SerializeField] private ImageTimer _farmTimer;
     [SerializeField] private ImageTimer _eatingTimer;
@@ -42,6 +43,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int _raidIncrease; //количество зомби на которое увеличивается каждое новое нападение
     [SerializeField] private int _nextRaid; //
 
+    private AudioSource _warroirsDoneSound;
+    private AudioSource _farmsDoneSound;
+
     private float _tomatoFarmTimer = -2;
     private float _securityCreateTimer = -2;
     private float _raidTimer;
@@ -62,8 +66,9 @@ public class GameManager : MonoBehaviour
         UpdateResourcesText();
         _raidTimer = _raidMaxTime;
         Time.timeScale = 1;
+        _warroirsDoneSound = _warriorsSound.GetComponent<AudioSource>();
+        _farmsDoneSound = _farmsSound.GetComponent<AudioSource>();
     }
-
     void Update()
     {
         _raidTimer -= Time.deltaTime;
@@ -95,7 +100,6 @@ public class GameManager : MonoBehaviour
                 GameOver();
             }
         }
-
         if (_farmTimer.Tick)
         {
             _tomatoCount += _tomatoFarmsCount * _tomatoProducesOneFarm;
@@ -119,7 +123,6 @@ public class GameManager : MonoBehaviour
                 _tomatoCount -= _securityCount * _securityEatsTomato;
             }
         }
-
         UpdateResourcesText();
         CheckWin();
 
@@ -134,14 +137,16 @@ public class GameManager : MonoBehaviour
             _tomatoFarmTimer = -2;
             _tomatoCreateButton.interactable = true;
             _tomatoTimerImg.gameObject.SetActive(false);
+            _farmsDoneSound.Play();
             _tomatoFarmsCount += 1;
             if (_tomatoFarmsCount == _tomatoFarmsMaxCount)
             {
                 _objectiveFarmsCount.color = _doneColor;
                 _objFarmsDone = true;
+                _tomatoCreateButton.interactable = false;
+                _tomatoFarmsCountText.color = new Color(0.51f, 0.1f, 0.1f, 1);
             }
         }
-
         if (_securityCreateTimer > 0)
         {
             _securityCreateTimer -= Time.deltaTime;
@@ -154,6 +159,7 @@ public class GameManager : MonoBehaviour
             _securityTimerImg.gameObject.SetActive(false);
             _securityCreateButton.interactable = true;
             _securityCount += 1;
+            _warroirsDoneSound.Play();
             _totalSecurityCount += 1;
             if (_totalSecurityCount == 10)
             {
@@ -161,22 +167,18 @@ public class GameManager : MonoBehaviour
                 _objSecurityDone = true;
             }
         }
-
-
     }
-
     void UpdateResourcesText()
     {
         _resourcesCount.text = _tomatoCount.ToString();
         _objectiveResources.text = _totalResource.ToString() + "/1000";
         _warriorsCountText.text = _securityCount.ToString();
         _objectiveSecurityCount.text = _totalSecurityCount.ToString() + "/10";
-        _tomatoFarmsCountText.text = _tomatoFarmsCount.ToString();
+        _tomatoFarmsCountText.text = _tomatoFarmsCount.ToString() + " / 6";
         _objectiveFarmsCount.text = _tomatoFarmsCount.ToString() + "/6";
         _objectiveAttackCount.text = _totalAttack.ToString() + "/10";
         _countOfInfectedMen.text = _nextRaid.ToString();
     }
-
     public void CreateTomatoFarm()
     {
         if (_tomatoCount >= _tomatoPerBuyFarm && _tomatoFarmsCount < _tomatoFarmsMaxCount)
@@ -186,12 +188,7 @@ public class GameManager : MonoBehaviour
             _tomatoTimerImg.gameObject.SetActive(true);
             _tomatoCreateButton.interactable = false;
         }
-        else if (_tomatoFarmsCount == _tomatoFarmsMaxCount)
-        {
-            _tomatoCreateButton.interactable = false;
-        }
     }
-
     public void CreateSecurityWarrior()
     {
         if (_tomatoCount >= _tomatoPerBuySecurity)
@@ -202,7 +199,6 @@ public class GameManager : MonoBehaviour
             _securityCreateButton.interactable = false;
         }
     }
-
     public void CheckWin()
     {
         if (_objResourcesDone && _objFarmsDone && _objSecurityDone && _objAttackDone)
@@ -211,7 +207,6 @@ public class GameManager : MonoBehaviour
             _gameWinPanel.SetActive(true);
         }
     }
-
     public void GameOver()
     {
         Time.timeScale = 0;
