@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class FabricWork : MonoBehaviour
 {
-    public GameObject [] robots = new GameObject[3];
+    public GameObject [] robots = new GameObject[5];
     public GameObject Box;
     void Start()
     {

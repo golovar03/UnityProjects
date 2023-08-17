@@ -149,9 +149,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98c43dded434cf4da47c91bda87ddf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Robot: {fileID: 4320142679034916808}
   point1: {fileID: 5533796551137068021}
   point2: {fileID: 5764746916155657752}
-  robot: {fileID: 5144732046904631138}
   Go: 0
 --- !u!1 &7009232965382281626
 GameObject:
