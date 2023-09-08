@@ -6,38 +6,49 @@ using UnityEngine.UIElements;
 
 public class Move : MonoBehaviour
 {
-    public Transform Robot;
-   
-    public Transform point1;
-    public Transform point2;
+    [SerializeField] private Transform robot;
+
+    [SerializeField] internal Transform point1;
+    [SerializeField] internal Transform point2;
+    [SerializeField] private float moveSpeed;
+
+    internal bool Go;
     private Vector3 _target;
-    public bool Go;
+
 
     void Start()
     {
-        Robot.transform.position = point1.position;
-        _target = point2.position; 
+        robot.transform.position = point1.position;
+        _target = point2.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Go)
+        if ((robot.transform.childCount == 1 & robot.transform.position == point2.position) ||
+            (robot.transform.childCount == 0 & robot.transform.position == point1.position))
         {
-            Robot.transform.position = Vector3.MoveTowards(Robot.transform.position, _target, Time.deltaTime * 3);
-            Robot.transform.LookAt(_target);
+            Go = false;
         }
-        
-        if (Robot.transform.position == _target)
+        else
         {
-            if(_target == point1.position)
+            Go = true;
+        }
+
+        if (Go == true)
+        {
+            robot.transform.position = Vector3.MoveTowards(robot.transform.position, _target, Time.deltaTime * moveSpeed);
+            robot.transform.LookAt(_target);
+            if (robot.transform.position == _target)
             {
-                _target = point2.position;
+                if (_target == point1.position)
+                {
+                    _target = point2.position;
+                }
+                else
+                {
+                    _target = point1.position;
+                }
             }
-            else
-            {
-                _target = point1.position;
-            }
-        }      
+        }
     }
 }
